@@ -91,21 +91,29 @@ Loop that generates the modifier classes with the `alert-variant()` mixin.
 
 ## JavaScript behavior
 
-### Triggers
+### Initialize
 
-Enable dismissal of an alert via JavaScript:
+Initialize elements as alerts
 
 ```js
 var alertList = document.querySelectorAll('.alert')
-alertList.forEach(function (alert) {
-  new bootstrap.Alert(alert)
+var alerts = [...alertList].map(function (el) {
+  return new bootstrap.Alert(el);
 })
 ```
 
-Or with `data` attributes on a button **within the alert**, as demonstrated above:
+### Triggers
+
+Dismissal can be achieved with `data` attributes on a button **within the alert**, as demonstrated above:
 
 ```html
 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+```
+
+or on a button **outside the alert** as demonstrated above:
+
+```html
+<button type="button" class="btn-close" data-bs-dismiss="alert" data-bs-target="#my-alert" aria-label="Close"></button>
 ```
 
 Note that closing an alert will remove it from the DOM.
@@ -118,8 +126,6 @@ You can create an alert instance with the alert constructor, for example:
 var myAlert = document.getElementById('myAlert')
 var bsAlert = new bootstrap.Alert(myAlert)
 ```
-
-This makes an alert listen for click events on descendant elements which have the `data-bs-dismiss="alert"` attribute. (Not necessary when using the data-api's auto-initialization.)
 
 <table class="table">
   <thead>

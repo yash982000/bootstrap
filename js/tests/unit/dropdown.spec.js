@@ -1,5 +1,4 @@
 import Dropdown from '../../src/dropdown'
-import EventHandler from '../../src/dom/event-handler'
 
 /** Test helpers */
 import { getFixture, clearFixture, createEvent, jQueryMock } from '../helpers/fixture'
@@ -215,58 +214,19 @@ describe('Dropdown', () => {
       const firstDropdownEl = fixtureEl.querySelector('.first')
       const secondDropdownEl = fixtureEl.querySelector('.second')
       const dropdown1 = new Dropdown(btnDropdown1)
-      const dropdown2 = new Dropdown(btnDropdown2)
 
       firstDropdownEl.addEventListener('shown.bs.dropdown', () => {
         expect(btnDropdown1.classList.contains('show')).toEqual(true)
         spyOn(dropdown1._popper, 'destroy')
-        dropdown2.toggle()
+        btnDropdown2.click()
       })
 
-      secondDropdownEl.addEventListener('shown.bs.dropdown', () => {
+      secondDropdownEl.addEventListener('shown.bs.dropdown', () => setTimeout(() => {
         expect(dropdown1._popper.destroy).toHaveBeenCalled()
         done()
-      })
+      }))
 
       dropdown1.toggle()
-    })
-
-    it('should toggle a dropdown and add/remove event listener on mobile', done => {
-      fixtureEl.innerHTML = [
-        '<div class="dropdown">',
-        '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>',
-        '  <div class="dropdown-menu">',
-        '    <a class="dropdown-item" href="#">Secondary link</a>',
-        '  </div>',
-        '</div>'
-      ].join('')
-
-      const defaultValueOnTouchStart = document.documentElement.ontouchstart
-      const btnDropdown = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')
-      const dropdown = new Dropdown(btnDropdown)
-
-      document.documentElement.ontouchstart = () => {}
-      spyOn(EventHandler, 'on')
-      spyOn(EventHandler, 'off')
-
-      btnDropdown.addEventListener('shown.bs.dropdown', () => {
-        expect(btnDropdown.classList.contains('show')).toEqual(true)
-        expect(btnDropdown.getAttribute('aria-expanded')).toEqual('true')
-        expect(EventHandler.on).toHaveBeenCalled()
-
-        dropdown.toggle()
-      })
-
-      btnDropdown.addEventListener('hidden.bs.dropdown', () => {
-        expect(btnDropdown.classList.contains('show')).toEqual(false)
-        expect(btnDropdown.getAttribute('aria-expanded')).toEqual('false')
-        expect(EventHandler.off).toHaveBeenCalled()
-
-        document.documentElement.ontouchstart = defaultValueOnTouchStart
-        done()
-      })
-
-      dropdown.toggle()
     })
 
     it('should toggle a dropdown at the right', done => {

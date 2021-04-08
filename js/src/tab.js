@@ -202,7 +202,13 @@ class Tab extends BaseComponent {
  */
 
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
-  event.preventDefault()
+  if (['A', 'AREA'].includes(this.tagName)) {
+    event.preventDefault()
+  }
+
+  if (isDisabled(this)) {
+    return
+  }
 
   const data = Data.get(this, DATA_KEY) || new Tab(this)
   data.show()

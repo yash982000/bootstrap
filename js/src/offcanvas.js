@@ -9,7 +9,6 @@ import {
   defineJQueryPlugin,
   getElementFromSelector,
   getSelectorFromElement,
-  getTransitionDurationFromElement,
   isDisabled,
   isVisible,
   typeCheckConfig
@@ -128,7 +127,7 @@ class Offcanvas extends BaseComponent {
       this._enforceFocusOnElement(this._element)
     }
 
-    setTimeout(completeCallBack, getTransitionDurationFromElement(this._element))
+    this._queueCallback(completeCallBack, this._element, true)
   }
 
   hide() {
@@ -166,7 +165,7 @@ class Offcanvas extends BaseComponent {
       this._element.classList.remove(CLASS_NAME_TOGGLING)
     }
 
-    setTimeout(completeCallback, getTransitionDurationFromElement(this._element))
+    this._queueCallback(completeCallback, this._element, true)
   }
 
   // Private

@@ -176,14 +176,7 @@ class Modal extends BaseComponent {
     EventHandler.off(this._element, EVENT_CLICK_DISMISS)
     EventHandler.off(this._dialog, EVENT_MOUSEDOWN_DISMISS)
 
-    if (isAnimated) {
-      const transitionDuration = getTransitionDurationFromElement(this._element)
-
-      EventHandler.one(this._element, 'transitionend', event => this._hideModal(event))
-      emulateTransitionEnd(this._element, transitionDuration)
-    } else {
-      this._hideModal()
-    }
+    this._queueCallback(() => this._hideModal(), this._element, isAnimated)
   }
 
   dispose() {
@@ -263,14 +256,7 @@ class Modal extends BaseComponent {
       })
     }
 
-    if (isAnimated) {
-      const transitionDuration = getTransitionDurationFromElement(this._dialog)
-
-      EventHandler.one(this._dialog, 'transitionend', transitionComplete)
-      emulateTransitionEnd(this._dialog, transitionDuration)
-    } else {
-      transitionComplete()
-    }
+    this._queueCallback(transitionComplete, this._dialog, isAnimated)
   }
 
   _enforceFocus() {
@@ -361,15 +347,7 @@ class Modal extends BaseComponent {
 
       this._backdrop.classList.add(CLASS_NAME_SHOW)
 
-      if (!isAnimated) {
-        callback()
-        return
-      }
-
-      const backdropTransitionDuration = getTransitionDurationFromElement(this._backdrop)
-
-      EventHandler.one(this._backdrop, 'transitionend', callback)
-      emulateTransitionEnd(this._backdrop, backdropTransitionDuration)
+      this._queueCallback(callback, this._backdrop, isAnimated)
     } else if (!this._isShown && this._backdrop) {
       this._backdrop.classList.remove(CLASS_NAME_SHOW)
 
@@ -378,13 +356,7 @@ class Modal extends BaseComponent {
         callback()
       }
 
-      if (isAnimated) {
-        const backdropTransitionDuration = getTransitionDurationFromElement(this._backdrop)
-        EventHandler.one(this._backdrop, 'transitionend', callbackRemove)
-        emulateTransitionEnd(this._backdrop, backdropTransitionDuration)
-      } else {
-        callbackRemove()
-      }
+      this._queueCallback(callbackRemove, this._backdrop, isAnimated)
     } else {
       callback()
     }

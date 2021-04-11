@@ -248,7 +248,8 @@ const execute = callback => {
 const pickFromList = (list, activeElement = null, getNext = true, allowCycle = true) => {
   let index = list.indexOf(activeElement)
 
-  if (index === -1) {// ensure index, if element not exists in list initialize it as first element
+  // ensure index, if element not exists in list initialize it as first element
+  if (index === -1) {
     return list[0]
   }
 

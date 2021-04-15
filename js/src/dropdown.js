@@ -114,8 +114,8 @@ class Dropdown extends BaseComponent {
     return DefaultType
   }
 
-  static get DATA_KEY() {
-    return DATA_KEY
+  static get NAME() {
+    return NAME
   }
 
   // Public
@@ -551,6 +551,6 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
  * add .Dropdown to jQuery only if jQuery is present
  */
 
-defineJQueryPlugin(NAME, Dropdown)
+defineJQueryPlugin(Dropdown)
 
 export default Dropdown

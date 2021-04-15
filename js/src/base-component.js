@@ -43,6 +43,14 @@ class BaseComponent {
   static get VERSION() {
     return VERSION
   }
+
+  static get NAME() {
+    throw new Error('You have to implement the static method "NAME", for each component!')
+  }
+
+  static get DATA_KEY() {
+    return `bs.${this.NAME}`
+  }
 }
 
 export default BaseComponent

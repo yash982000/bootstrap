@@ -45,8 +45,8 @@ const CLASS_NAME_SHOW = 'show'
 class Alert extends BaseComponent {
   // Getters
 
-  static get DATA_KEY() {
-    return DATA_KEY
+  static get NAME() {
+    return NAME
   }
 
   // Public
@@ -136,6 +136,6 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DISMISS, Alert.handleDi
  * add .Alert to jQuery only if jQuery is present
  */
 
-defineJQueryPlugin(NAME, Alert)
+defineJQueryPlugin(Alert)
 
 export default Alert

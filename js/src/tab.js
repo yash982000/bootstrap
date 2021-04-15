@@ -57,8 +57,8 @@ const SELECTOR_DROPDOWN_ACTIVE_CHILD = ':scope > .dropdown-menu .active'
 class Tab extends BaseComponent {
   // Getters
 
-  static get DATA_KEY() {
-    return DATA_KEY
+  static get NAME() {
+    return NAME
   }
 
   // Public
@@ -215,6 +215,6 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
  * add .Tab to jQuery only if jQuery is present
  */
 
-defineJQueryPlugin(NAME, Tab)
+defineJQueryPlugin(Tab)
 
 export default Tab

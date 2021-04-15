@@ -1,5 +1,5 @@
 /*!
-  * Bootstrap offcanvas.js v5.0.0-beta3 (https://getbootstrap.com/)
+  * Bootstrap offcanvas.js v5.0.0 (https://getbootstrap.com/)
   * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
@@ -19,7 +19,7 @@
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.0.0-beta3): util/index.js
+   * Bootstrap (v5.0.0): util/index.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -48,7 +48,7 @@
 
 
       if (hrefAttr.includes('#') && !hrefAttr.startsWith('#')) {
-        hrefAttr = '#' + hrefAttr.split('#')[1];
+        hrefAttr = `#${hrefAttr.split('#')[1]}`;
       }
 
       selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : null;
@@ -104,7 +104,7 @@
       const valueType = value && isElement(value) ? 'element' : toType(value);
 
       if (!new RegExp(expectedTypes).test(valueType)) {
-        throw new TypeError(`${componentName.toUpperCase()}: ` + `Option "${property}" provided type "${valueType}" ` + `but expected type "${expectedTypes}".`);
+        throw new TypeError(`${componentName.toUpperCase()}: Option "${property}" provided type "${valueType}" but expected type "${expectedTypes}".`);
       }
     });
   };
@@ -179,11 +179,11 @@
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.0.0-beta3): util/scrollBar.js
+   * Bootstrap (v5.0.0): util/scrollBar.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
-  const SELECTOR_FIXED_CONTENT = '.fixed-top, .fixed-bottom, .is-fixed';
+  const SELECTOR_FIXED_CONTENT = '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top';
   const SELECTOR_STICKY_CONTENT = '.sticky-top';
 
   const getWidth = () => {
@@ -193,7 +193,7 @@
   };
 
   const hide = (width = getWidth()) => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden'; // trick: We adjust positive paddingRight and negative marginRight to sticky-top elements, to keep shown fullwidth
 
     _setElementAttributes(SELECTOR_FIXED_CONTENT, 'paddingRight', calculatedValue => calculatedValue + width);
 
@@ -212,7 +212,7 @@
       const actualValue = element.style[styleProp];
       const calculatedValue = window.getComputedStyle(element)[styleProp];
       Manipulator__default['default'].setDataAttribute(element, styleProp, actualValue);
-      element.style[styleProp] = callback(Number.parseFloat(calculatedValue)) + 'px';
+      element.style[styleProp] = `${callback(Number.parseFloat(calculatedValue))}px`;
     });
   };
 
@@ -230,7 +230,7 @@
     SelectorEngine__default['default'].find(selector).forEach(element => {
       const value = Manipulator__default['default'].getDataAttribute(element, styleProp);
 
-      if (typeof value === 'undefined' && element === document.body) {
+      if (typeof value === 'undefined') {
         element.style.removeProperty(styleProp);
       } else {
         Manipulator__default['default'].removeDataAttribute(element, styleProp);
@@ -241,7 +241,7 @@
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.0.0-beta3): offcanvas.js
+   * Bootstrap (v5.0.0): offcanvas.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
    * --------------------------------------------------------------------------
    */

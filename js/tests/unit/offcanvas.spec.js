@@ -2,7 +2,7 @@ import Offcanvas from '../../src/offcanvas'
 import EventHandler from '../../src/dom/event-handler'
 
 /** Test helpers */
-import { clearFixture, createEvent, getFixture, jQueryMock } from '../helpers/fixture'
+import { clearBodyAndDocument, clearFixture, createEvent, getFixture, jQueryMock } from '../helpers/fixture'
 
 describe('Offcanvas', () => {
   let fixtureEl
@@ -14,15 +14,11 @@ describe('Offcanvas', () => {
   afterEach(() => {
     clearFixture()
     document.body.classList.remove('offcanvas-open')
-    document.documentElement.removeAttribute('style')
-    document.body.removeAttribute('style')
-    document.body.removeAttribute('data-bs-padding-right')
+    clearBodyAndDocument()
   })
 
   beforeEach(() => {
-    document.documentElement.removeAttribute('style')
-    document.body.removeAttribute('style')
-    document.body.removeAttribute('data-bs-padding-right')
+    clearBodyAndDocument()
   })
 
   describe('VERSION', () => {
@@ -160,15 +156,16 @@ describe('Offcanvas', () => {
 
       const offCanvasEl = fixtureEl.querySelector('.offcanvas')
       const offCanvas = new Offcanvas(offCanvasEl, { scroll: true })
-      const initialOverFlow = document.body.style.overflow
+      const doc = document.documentElement
+      const initialOverFlow = doc.style.overflowY
 
       offCanvasEl.addEventListener('shown.bs.offcanvas', () => {
-        expect(document.body.style.overflow).toEqual(initialOverFlow)
+        expect(doc.style.overflowY).toEqual(initialOverFlow)
 
         offCanvas.hide()
       })
       offCanvasEl.addEventListener('hidden.bs.offcanvas', () => {
-        expect(document.body.style.overflow).toEqual(initialOverFlow)
+        expect(doc.style.overflowY).toEqual(initialOverFlow)
         done()
       })
       offCanvas.show()
@@ -177,16 +174,18 @@ describe('Offcanvas', () => {
     it('if scroll is disabled, should not allow body to scroll while offcanvas is open', done => {
       fixtureEl.innerHTML = '<div class="offcanvas"></div>'
 
+      const doc = document.documentElement
+      doc.style.overflowY = 'scroll'
       const offCanvasEl = fixtureEl.querySelector('.offcanvas')
       const offCanvas = new Offcanvas(offCanvasEl, { scroll: false })
 
       offCanvasEl.addEventListener('shown.bs.offcanvas', () => {
-        expect(document.body.style.overflow).toEqual('hidden')
+        expect(doc.style.overflowY).toEqual('hidden')
 
         offCanvas.hide()
       })
       offCanvasEl.addEventListener('hidden.bs.offcanvas', () => {
-        expect(document.body.style.overflow).not.toEqual('hidden')
+        expect(doc.style.overflowY).toEqual('scroll')
         done()
       })
       offCanvas.show()

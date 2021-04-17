@@ -39,3 +39,10 @@ export const jQueryMock = {
     })
   }
 }
+
+export const clearBodyAndDocument = () => {
+  document.documentElement.removeAttribute('style')
+  document.body.removeAttribute('style')
+  document.documentElement.removeAttribute('data-bs-padding-right')
+  document.body.removeAttribute('data-bs-padding-right')
+}
